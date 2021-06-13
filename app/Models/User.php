@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @method static create(array $array)
+ */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;

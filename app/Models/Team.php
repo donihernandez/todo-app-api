@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static create(array $array)
+ * @method static where()
+ * @method static findOrFail(mixed $teamId)
+ */
 class Team extends Model
 {
     use HasFactory, SoftDeletes;
