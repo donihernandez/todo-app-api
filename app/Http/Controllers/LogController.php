@@ -18,7 +18,7 @@ class LogController extends Controller
      */
     public function index($id): Response
     {
-        $logs = Log::whereLogId($id)->get();
+        $logs = Log::whereTaskId($id)->get();
         return response($logs);
     }
 
@@ -37,7 +37,7 @@ class LogController extends Controller
 
         $log = Log::create($request->all());
         return response()->json([
-            'tag' => $log,
+            'log' => $log,
             'message' => 'The log was created successfully!'
         ]);
     }

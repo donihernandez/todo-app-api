@@ -8,31 +8,27 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Board extends Model
+class Card extends Model
 {
     use HasFactory, SoftDeletes;
 
-    /**
-     * @var string[]
-     */
     protected $fillable = [
-        'team_id',
-        'background_image',
-        'visibility'
+      'board_id',
+      'name'
     ];
 
     /**
      * @return BelongsTo
      */
-    public function team(): BelongsTo
+    public function board(): BelongsTo
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Board::class);
     }
 
     /**
      * @return HasMany
      */
-    public function cards(): HasMany {
-        return $this->hasMany(Card::class);
+    public function tasks(): HasMany {
+        return $this->hasMany(Task::class);
     }
 }

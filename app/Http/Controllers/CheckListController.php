@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
+use App\Models\Checklist;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function response;
 
-class TagController extends Controller
+class CheckListController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +17,8 @@ class TagController extends Controller
      */
     public function index($id): Response
     {
-        $tags = Tag::whereTaskId($id)->get();
-        return response($tags);
+        $checklists = Checklist::whereTaskId($id)->get();
+        return response($checklists);
     }
 
     /**
@@ -32,14 +31,14 @@ class TagController extends Controller
     {
         $request->validate([
             'task_id' => 'required',
-            'name' => 'required|string|max:255',
-            'color' => 'required'
+            'done' => 'required',
+            'description' => 'required|string|max:255',
         ]);
 
-        $tag = Tag::create($request->all());
+        $checklist = Checklist::create($request->all());
         return response()->json([
-            'tag' => $tag,
-            'message' => 'The tag was created successfully!'
+            'checklist' => $checklist,
+            'message' => 'The checklist was created successfully!'
         ]);
     }
 
@@ -51,8 +50,8 @@ class TagController extends Controller
      */
     public function show($id): Response
     {
-        $tag = Tag::findOrFail($id);
-        return response($tag);
+        $checklist = Checklist::findOrFail($id);
+        return response($checklist);
     }
 
     /**
@@ -64,9 +63,9 @@ class TagController extends Controller
      */
     public function update(Request $request, $id): JsonResponse
     {
-        Tag::findOrFail($id)->update($request->all());
+        Checklist::findOrFail($id)->update($request->all());
         return response()->json([
-            'message' => 'The tag was updated successfully!'
+            'message' => 'The checklist was updated successfully!'
         ]);
     }
 
@@ -78,9 +77,9 @@ class TagController extends Controller
      */
     public function destroy($id): JsonResponse
     {
-        Tag::destroy($id);
+        Checklist::destroy($id);
         return response()->json([
-            'message' => 'The tag was deleted successfully!'
+            'message' => 'The checklist was deleted successfully!'
         ]);
     }
 }

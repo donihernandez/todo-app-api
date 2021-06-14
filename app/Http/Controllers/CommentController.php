@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
+use App\Models\Comment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function response;
 
-class TagController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +17,8 @@ class TagController extends Controller
      */
     public function index($id): Response
     {
-        $tags = Tag::whereTaskId($id)->get();
-        return response($tags);
+        $comments = Comment::whereTaskId($id)->get();
+        return response($comments);
     }
 
     /**
@@ -32,14 +31,14 @@ class TagController extends Controller
     {
         $request->validate([
             'task_id' => 'required',
-            'name' => 'required|string|max:255',
-            'color' => 'required'
+            'user_id' => 'required',
+            'comment' => 'required|string|max:255',
         ]);
 
-        $tag = Tag::create($request->all());
+        $comment = Comment::create($request->all());
         return response()->json([
-            'tag' => $tag,
-            'message' => 'The tag was created successfully!'
+            'comment' => $comment,
+            'message' => 'The comment was created successfully!'
         ]);
     }
 
@@ -51,8 +50,8 @@ class TagController extends Controller
      */
     public function show($id): Response
     {
-        $tag = Tag::findOrFail($id);
-        return response($tag);
+        $comment = Comment::findOrFail($id);
+        return response($comment);
     }
 
     /**
@@ -64,9 +63,9 @@ class TagController extends Controller
      */
     public function update(Request $request, $id): JsonResponse
     {
-        Tag::findOrFail($id)->update($request->all());
+        Comment::findOrFail($id)->update($request->all());
         return response()->json([
-            'message' => 'The tag was updated successfully!'
+            'message' => 'The comment was updated successfully!'
         ]);
     }
 
@@ -78,9 +77,9 @@ class TagController extends Controller
      */
     public function destroy($id): JsonResponse
     {
-        Tag::destroy($id);
+        Comment::destroy($id);
         return response()->json([
-            'message' => 'The tag was deleted successfully!'
+            'message' => 'The comment was deleted successfully!'
         ]);
     }
 }

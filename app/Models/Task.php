@@ -25,9 +25,9 @@ class Task extends Model
     /**
      * @return BelongsTo
      */
-    public function board(): BelongsTo
+    public function card(): BelongsTo
     {
-        return $this->belongsTo(Board::class);
+        return $this->belongsTo(Card::class);
     }
 
     /**

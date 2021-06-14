@@ -87,7 +87,7 @@ class TeamController extends Controller
         }
 
         if (!$team->personal_team) {
-            $team->users()->attach($request->userToRemove);
+            $team->users()->detach($request->userToRemove);
         } else {
             return response("This is a personal user team. You don't have access!", 400);
         }

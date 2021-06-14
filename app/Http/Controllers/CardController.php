@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
+use App\Models\Card;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function response;
 
-class TagController extends Controller
+class CardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +17,8 @@ class TagController extends Controller
      */
     public function index($id): Response
     {
-        $tags = Tag::whereTaskId($id)->get();
-        return response($tags);
+        $cards = Card::whereBoardId($id)->get();
+        return response($cards);
     }
 
     /**
@@ -31,15 +30,14 @@ class TagController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            'task_id' => 'required',
+            'board_id' => 'required',
             'name' => 'required|string|max:255',
-            'color' => 'required'
         ]);
 
-        $tag = Tag::create($request->all());
+        $card = Card::create($request->all());
         return response()->json([
-            'tag' => $tag,
-            'message' => 'The tag was created successfully!'
+            'card' => $card,
+            'message' => 'The card was created successfully!'
         ]);
     }
 
@@ -51,8 +49,8 @@ class TagController extends Controller
      */
     public function show($id): Response
     {
-        $tag = Tag::findOrFail($id);
-        return response($tag);
+        $card = Card::findOrFail($id);
+        return response($card);
     }
 
     /**
@@ -64,9 +62,9 @@ class TagController extends Controller
      */
     public function update(Request $request, $id): JsonResponse
     {
-        Tag::findOrFail($id)->update($request->all());
+        Card::findOrFail($id)->update($request->all());
         return response()->json([
-            'message' => 'The tag was updated successfully!'
+            'message' => 'The card was updated successfully!'
         ]);
     }
 
@@ -78,9 +76,9 @@ class TagController extends Controller
      */
     public function destroy($id): JsonResponse
     {
-        Tag::destroy($id);
+        Card::destroy($id);
         return response()->json([
-            'message' => 'The tag was deleted successfully!'
+            'message' => 'The card was deleted successfully!'
         ]);
     }
 }
