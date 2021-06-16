@@ -16,7 +16,7 @@ class CreateBoardsTable extends Migration
         Schema::create('boards', function (Blueprint $table) {
             $table->id();
             $table->foreignId('team_id')->constrained()->cascadeOnDelete();
-            $table->string('background_image');
+            $table->string('background_image')->nullable();
             $table->string('visibility');
             $table->timestamps();
             $table->softDeletes();

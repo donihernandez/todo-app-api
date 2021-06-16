@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AttachedController;
+use App\Http\Controllers\BoardController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CheckListController;
 use App\Http\Controllers\CommentController;
@@ -73,6 +75,20 @@ Route::prefix('/cards')->group(function() {
     Route::post('/', [CardController::class, 'store']);
     Route::put('/{id}', [CardController::class, 'update']);
     Route::delete('/{id}', [CardController::class, 'destroy']);
+});
+
+Route::prefix('/attacheds')->group(function() {
+    Route::get('/{id}', [AttachedController::class, 'index']);
+    Route::get('/show/{id}', [AttachedController::class, 'show']);
+    Route::post('/', [AttachedController::class, 'store']);
+    Route::delete('/{id}', [AttachedController::class, 'destroy']);
+});
+
+Route::prefix('/boards')->group(function() {
+    Route::get('/{id}', [BoardController::class, 'index']);
+    Route::get('/show/{id}', [BoardController::class, 'show']);
+    Route::post('/', [BoardController::class, 'store']);
+    Route::delete('/{id}', [BoardController::class, 'destroy']);
 });
 
 Route::prefix('tasks')->group(function () {
