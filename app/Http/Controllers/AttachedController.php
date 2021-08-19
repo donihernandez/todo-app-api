@@ -22,7 +22,15 @@ class AttachedController extends Controller
     public function index($id): Response
     {
         $attacheds = Attached::whereTaskId($id)->get();
-        return response($attacheds);
+        if (!$attacheds || count($attacheds) < 0) {
+            return \response([
+                'message' => 'Not Found'
+            ]);
+        }
+        return response([
+            'attacheds' => $attacheds,
+            'message' => 'Successful'
+        ], 200);
     }
 
     /**
