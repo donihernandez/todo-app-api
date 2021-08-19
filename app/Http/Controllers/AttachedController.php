@@ -53,7 +53,7 @@ class AttachedController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param $id
      * @return StreamedResponse
      */
     public function show($id): StreamedResponse
@@ -65,7 +65,7 @@ class AttachedController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  $id
      * @return JsonResponse
      */
     public function destroy($id): JsonResponse

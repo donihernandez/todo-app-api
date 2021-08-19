@@ -7,6 +7,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,7 @@ class UserController extends Controller
         ]);
     }
 
+
     /**
      * @throws ValidationException
      */
@@ -52,34 +54,45 @@ class UserController extends Controller
 
         $this->guard()->login($user);
 
+        $tokenInfo = $user->name.Date::now();
+
+        $token = $user->createToken($tokenInfo)->plainTextToken;
+
         return response()->json([
             'user' => $user,
+            'token' => $token,
             'message' => 'Registration Successful!'
         ], 200);
     }
 
     /**
      * @param Request $request
-     * @return JsonResponse
+     * @return Application|\Illuminate\Contracts\Routing\ResponseFactory|JsonResponse|\Illuminate\Http\Response
      * @throws ValidationException
      */
-    public function login(Request $request): JsonResponse
+    public function login(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'password' => 'required'
         ]);
 
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-           return response()->json([
-               'message' => 'Login Successful'
-           ], 200);
+        $user = User::where('email', $request->email)->firs();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response([
+                'message' => 'Invalid credentials'
+            ], 401);
         }
 
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.']
-        ]);
+        $tokenInfo = $user->name.Date::now();
+        $token = $user->createToken($tokenInfo)->plainTextToken;
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+            'message' => 'Login Successful!'
+        ], 200);
     }
 
     /**
@@ -87,7 +100,8 @@ class UserController extends Controller
      */
     public function logout(): JsonResponse
     {
-        Auth::logout();
+        auth()->user()->tokens()->delete();
+
         return response()->json([
             'message' => 'Logout Successful'
         ], 200);
